@@ -1,7 +1,8 @@
 package com.example.Lab5.controller;
 
 import com.example.Lab5.entity.Student;
-
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
@@ -13,6 +14,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.List;
 
+
 public class StudentManagerUI extends JFrame {
 
     private JTextField txtId, txtName, txtMark;
@@ -21,7 +23,7 @@ public class StudentManagerUI extends JFrame {
     private DefaultTableModel tableModel;
 
     private final String API_URL = "http://localhost:8080/students";
-    private final tools.jackson.databind.ObjectMapper mapper = new tools.jackson.databind.ObjectMapper();
+    private final ObjectMapper mapper = new ObjectMapper();
 
     public StudentManagerUI() {
         setTitle("Quản lý sinh viên");
@@ -174,7 +176,7 @@ public class StudentManagerUI extends JFrame {
         try {
             byte[] response = sendApiRequest("GET", API_URL, null);
             // API Spring Boot Bài 4 trả về mảng/List JSON (không phải Map như Firebase)
-            List<Student> list = mapper.readValue(response, new tools.jackson.core.type.TypeReference<List<Student>>() {});
+            List<Student> list = mapper.readValue(response, new TypeReference<List<Student>>() {});
 
             tableModel.setRowCount(0); // Xóa dữ liệu cũ
             for (Student s : list) {
